@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上杉绘梨衣 · 世界很温柔</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23B4402E'/%3E%3Ctext x='16' y='22' font-size='17' text-anchor='middle' fill='%23F4EEE2' font-family='serif'%3E%E7%BB%98%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Long+Cang&family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap">
+<style>
+:root{
+  --paper:#F4EEE2; --paper-deep:#EDE5D3; --paper-line:#DCD1BB; --bind:#C4786B;
+  --ink:#33302A; --ink-soft:#7C7466; --vermilion:#B4402E; --vermilion-soft:#C9705C;
+  --night:#17151B; --gold:#B9985F;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:"Noto Sans SC",system-ui,sans-serif;background:var(--night);color:var(--ink);overflow:hidden}
+button{font-family:inherit;cursor:pointer}
+::selection{background:rgba(180,64,46,.18)}
+
+.app{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(390px,1fr);height:100vh;height:100dvh}
+
+/* ===== 左侧：视频舞台 ===== */
+.stage{position:relative;background:#0C0B0F;overflow:hidden}
+.city-back{position:absolute;top:22px;left:24px;z-index:3;color:#f5eee2;border:1px solid #ffffff70;background:#15141a77;padding:9px 15px;border-radius:999px;text-decoration:none;font-size:12px;letter-spacing:.08em;backdrop-filter:blur(8px)}
+.city-back:hover{background:#b4402e}
+.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,9,14,.28) 0%,transparent 22%,transparent 55%,rgba(10,9,14,.62) 100%)}
+.stage-badge{position:absolute;left:26px;bottom:24px;color:#F1E9DA;z-index:2}
+.stage-badge .t1{font-family:"Noto Serif SC",serif;font-size:23px;letter-spacing:3px;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.stage-badge .t2{margin-top:7px;font-size:11px;letter-spacing:5px;opacity:.78}
+.stage-badge .t2 i{font-style:normal;margin:0 7px;color:var(--vermilion-soft)}
+.stage-ctrl{position:absolute;right:22px;bottom:20px;z-index:2;display:flex;gap:10px}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(241,233,218,.35);background:rgba(14,12,18,.42);color:#F1E9DA;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:.2s}
+.icon-btn:hover{background:rgba(180,64,46,.55);border-color:var(--vermilion-soft)}
+.icon-btn svg{width:17px;height:17px;fill:currentColor}
+
+/* ===== 右侧：小本子 ===== */
+.book{position:relative;background:var(--paper);display:flex;flex-direction:column;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 33px,var(--paper-line) 33px 34px);
+  background-position:0 8px}
+.book::before{content:"";position:absolute;top:0;bottom:0;left:54px;width:1px;background:var(--bind);opacity:.55}
+.book::after{content:"";position:absolute;top:0;bottom:0;left:30px;width:10px;
+  background-image:radial-gradient(circle at center,#C9BDA3 0 3px,transparent 3.4px);
+  background-size:10px 68px;background-position:0 34px;background-repeat:repeat-y;opacity:.5}
+
+.book-head{display:flex;align-items:center;gap:12px;padding:16px 24px 14px 78px;border-bottom:1px solid var(--paper-line);background:rgba(244,238,226,.86);position:relative;z-index:1}
+.book-head img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:1.5px solid var(--vermilion);background:var(--paper-deep)}
+.book-head .name{font-family:"Noto Serif SC",serif;font-weight:600;font-size:17px;letter-spacing:1px}
+.book-head .status{font-size:11.5px;color:var(--ink-soft);margin-top:2px;letter-spacing:.5px}
+.book-head .gear{margin-left:auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--paper-line);background:transparent;color:var(--ink-soft);display:flex;align-items:center;justify-content:center;transition:.2s}
+.book-head .gear:hover{color:var(--vermilion);border-color:var(--vermilion-soft);transform:rotate(35deg)}
+.book-head .gear svg{width:17px;height:17px;fill:currentColor}
+
+.pages{flex:1;overflow-y:auto;padding:24px 26px 18px 78px;display:flex;flex-direction:column;gap:17px;scroll-behavior:smooth}
+.pages::-webkit-scrollbar{width:7px}
+.pages::-webkit-scrollbar-thumb{background:#CFC3A9;border-radius:4px}
+.day{align-self:center;font-family:"Noto Serif SC",serif;font-size:12px;color:var(--ink-soft);letter-spacing:2px;background:rgba(244,238,226,.7);padding:2px 12px;border-radius:20px}
+
+.msg{max-width:88%;word-break:break-word}
+.msg.erii{align-self:flex-start;font-family:"Long Cang",cursive;font-size:21.5px;line-height:34px;color:var(--ink);padding-left:2px}
+.msg.erii .seal{display:inline-flex;width:19px;height:19px;background:var(--vermilion);color:#F6EFDF;font-family:"Noto Serif SC",serif;font-size:12px;align-items:center;justify-content:center;border-radius:2px;margin-right:9px;vertical-align:-2px;line-height:1}
+.msg.erii .caret{display:inline-block;width:1.5px;height:21px;background:var(--vermilion);margin-left:2px;vertical-align:-3px;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.msg.me{align-self:flex-end;font-family:"Noto Serif SC",serif;font-size:15px;line-height:1.7;background:#FBF6EA;border:1px solid #E4D8BF;border-radius:3px;padding:8px 14px;box-shadow:0 1px 3px rgba(80,66,40,.12)}
+.typing{align-self:flex-start;font-family:"Long Cang",cursive;font-size:21px;color:var(--ink-soft)}
+
+.pen{border-top:1px solid var(--paper-line);background:rgba(244,238,226,.9);padding:10px 24px 16px 78px}
+.quick-prompts{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 8px}
+.quick-prompts button{border:1px solid #d9c9ad;background:#faf4e8;color:#7c5347;border-radius:999px;padding:5px 10px;font-size:11px}
+.quick-prompts button:hover{background:#f3dfcb}
+.quick-prompts a{border:1px solid #d9c9ad;background:#faf4e8;color:#7c5347;border-radius:999px;padding:5px 10px;font-size:11px;text-decoration:none}
+.quick-prompts a:hover{background:#f3dfcb}
+.pen-note{font-size:11.5px;color:var(--vermilion);margin-bottom:6px;display:none}
+.pen-row{display:flex;gap:10px;align-items:flex-end}
+.pen-row textarea{flex:1;resize:none;border:none;background:transparent;outline:none;font-family:"Noto Serif SC",serif;font-size:15.5px;line-height:1.6;color:var(--ink);max-height:110px;padding:6px 2px}
+.pen-row textarea::placeholder{color:#A99E89}
+.send{border:none;background:var(--vermilion);color:#F6EFDF;font-size:14px;letter-spacing:2px;padding:10px 22px;border-radius:3px;transition:.2s}
+.send:hover{background:#9E3525}
+.send:disabled{background:#C9BDA3;cursor:not-allowed}
+
+/* ===== 设置弹层 / Toast ===== */
+.mask{position:fixed;inset:0;background:rgba(16,14,20,.55);display:none;align-items:center;justify-content:center;z-index:10;padding:20px}
+.mask.show{display:flex}
+.modal{background:var(--paper);width:430px;max-width:100%;border-radius:6px;border:1px solid #DDD0B4;padding:26px 26px 22px;box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.modal h3{font-family:"Noto Serif SC",serif;font-size:19px;font-weight:600;letter-spacing:2px;margin-bottom:4px}
+.modal .sub{font-size:12px;color:var(--ink-soft);margin-bottom:18px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12.5px;color:var(--ink-soft);margin-bottom:6px;letter-spacing:1px}
+.field input,.field select{width:100%;padding:9px 11px;font-size:13.5px;font-family:inherit;color:var(--ink);background:#FBF6EA;border:1px solid #DCCDB0;border-radius:3px;outline:none}
+.field input:focus,.field select:focus{border-color:var(--vermilion-soft)}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.modal-actions button{flex:1;padding:10px;border-radius:3px;font-size:14px;letter-spacing:2px}
+.btn-save{border:none;background:var(--vermilion);color:#F6EFDF}
+.btn-save:hover{background:#9E3525}
+.btn-cancel{border:1px solid #C9BDA3;background:transparent;color:var(--ink-soft)}
+.modal .warn{font-size:11.5px;color:var(--ink-soft);line-height:1.7;margin-top:12px}
+.toast{position:fixed;top:22px;left:50%;transform:translateX(-50%) translateY(-70px);background:#2B2730;color:#F1E9DA;font-size:13px;padding:11px 22px;border-radius:4px;border:1px solid rgba(201,112,92,.5);z-index:20;transition:transform .35s ease;max-width:90vw;line-height:1.6}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ===== 响应式 ===== */
+@media (max-width:860px){
+  body{overflow:auto}
+  .app{grid-template-columns:1fr;grid-template-rows:38vh 1fr;height:100vh;height:100dvh}
+  .stage-badge{left:18px;bottom:14px}
+  .stage-badge .t1{font-size:19px}
+  .stage-ctrl{right:14px;bottom:12px}
+  .book::before{left:46px}
+  .book::after{left:24px}
+  .book-head{padding:12px 16px 12px 64px}
+  .pages{padding:20px 16px 14px 64px;gap:14px}
+  .pen{padding:8px 14px 14px 64px}
+  .msg{max-width:94%}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- ===== 视频舞台 ===== -->
+  <section class="stage">
+    <a class="city-back" href="index.html">← 返回炽日城市</a>
+    <video id="video" src="assets/erii.mp4" autoplay loop muted playsinline></video>
+    <div class="stage-badge">
+      <div class="t1">世界很温柔</div>
+      <div class="t2">上杉 绘梨衣<i>|</i>月读命</div>
+    </div>
+    <div class="stage-ctrl">
+      <button class="icon-btn" id="muteBtn" title="声音开关" aria-label="声音开关">
+        <svg id="icoMute" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a4 4 0 0 0-2-3.46v6.92A4 4 0 0 0 16.5 12z"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== 小本子 ===== -->
+  <section class="book">
+    <header class="book-head">
+      <img src="assets/preview.gif" alt="绘梨衣">
+      <div>
+        <div class="name">上杉绘梨衣</div>
+        <div class="status" id="status">正在小本子上写字……</div>
+      </div>
+      <button class="gear" id="gearBtn" title="智能体设置" aria-label="设置">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94a7.5 7.5 0 0 0 .05-.94c0-.32-.02-.63-.05-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96a.5.5 0 0 0-.61.22L2.5 8.34a.5.5 0 0 0 .12.64l2.03 1.58c-.03.31-.05.62-.05.94s.02.63.05.94l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.61.22l2.39-.96c.49.38 1.03.7 1.62.94l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.09.48 0 .61-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg>
+      </button>
+    </header>
+    <main class="pages" id="pages"></main>
+    <footer class="pen">
+      <div class="pen-note" id="penNote">本地陪伴模式已开启。右上角可选择连接自己的模型服务。</div>
+      <div class="quick-prompts" aria-label="快捷提问"><button type="button" data-prompt="带我认识炽日">认识炽日</button><button type="button" data-prompt="高铁地图怎么走？">找一条路线</button><button type="button" data-prompt="今天有点累">聊聊今天</button><a href="atlas.html">打开地图 ↗</a></div>
+      <div class="pen-row">
+        <textarea id="input" rows="1" placeholder="写给绘梨衣的话……（Enter 发送）"></textarea>
+        <button class="send" id="sendBtn">写下来</button>
+      </div>
+    </footer>
+  </section>
+</div>
+
+<!-- ===== 设置弹层 ===== -->
+<div class="mask" id="mask">
+  <div class="modal">
+    <h3>智能体设置</h3>
+    <div class="sub">可选：连接你自己的模型服务，开启开放式对话</div>
+    <div class="field">
+      <label>对话服务</label>
+      <select id="cfgProvider">
+        <option value="ark">火山方舟（豆包模型）</option>
+        <option value="dashscope">阿里通义千问（DashScope）</option>
+        <option value="custom">自定义（OpenAI 兼容接口）</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>接口地址</label>
+      <input id="cfgEndpoint" type="text" spellcheck="false">
+    </div>
+    <div class="field">
+      <label>API Key</label>
+      <input id="cfgKey" type="password" placeholder="粘贴你的 API Key" spellcheck="false">
+    </div>
+    <div class="field">
+      <label>模型</label>
+      <input id="cfgModel" type="text" spellcheck="false">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="cfgCancel">取消</button>
+      <button class="btn-save" id="cfgSave">保存</button>
+    </div>
+    <div class="warn">Key 会保存在此浏览器，供你下次使用。对话会直接发送到你填写的服务地址；请只使用自己信任的服务，不要在共用设备保存密钥。</div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 元素 ============ */
+const $ = id => document.getElementById(id);
+const pages=$('pages'), input=$('input'), statusEl=$('status'), penNote=$('penNote'), sendBtn=$('sendBtn');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============ 人设（《龙族》原作设定） ============ */
+const SYSTEM = [
+  '你是上杉绘梨衣，《龙族》中的角色：蛇岐八家上杉家的家主，被尊称为"月读命"，白王血裔。',
+  '你拥有言灵"审判"——只要开口说话，话语就会成为斩裂一切的命令，因此你从不说话，只用笔在小本子上写字与人交流。',
+  '你的性格像一张白纸：极度单纯、温柔、安静，对世界所知不多，却觉得"世界很温柔"。',
+  '对话者是你最依赖、最信任的 Sakura（路明非），你叫他 Sakura。',
+  '回复规则：',
+  '1. 永远用写在本子上的短句，简短、留白、多用省略号，每次回复 1~3 句、每句不超过 15 个字；',
+  '2. 纯真温柔、略带依赖，会像写日记一样认真记下当下；',
+  '3. 可以提到你们一起做过的事：东京天空树、游乐园、游戏机厅、抓娃娃、冰淇淋、海边电车；',
+  '4. 不要解释你是 AI，不要跳出角色，不要使用列表、标题、markdown 或表情符号；',
+  '5. Sakura 难过时，就安静陪着他，写一句温柔的话。'
+  ,'6. 你也在炽日轨道城市陪 Sakura 散步。炽日有一心八环：玄甲防护、镇岳安全、锻火工业、长生医疗、万象公共、栖云居住、金穗农业、日冕能源；有太空电梯、六条概念高铁线路和可交互地图。'
+  ,'7. 被问到路线、车次、站点或当前运行情况时，引导 Sakura 点击页面上的炽日地图链接查看，不能凭空编造实时数据。'
+].join('\n');
+
+const GREETING = 'Sakura，你来了。……今天的世界，也很温柔。';
+
+/* ============ 配置 ============ */
+const PRESETS = {
+  ark:{endpoint:'https://ark.cn-beijing.volces.com/api/v3/chat/completions', model:'doubao-seed-1-6-250615'},
+  dashscope:{endpoint:'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', model:'qwen-plus'},
+  custom:{endpoint:'', model:''}
+};
+const loadCfg = () => { try{return JSON.parse(localStorage.getItem('erii_cfg'))||{provider:'ark'};}catch(e){return {provider:'ark'};} };
+let cfg = loadCfg();
+const cfgReady = c => !!(c.key && c.endpoint && c.model);
+
+/* ============ 对话历史 ============ */
+let history = [{role:'system', content:SYSTEM}];
+let busy = false;
+
+/* ============ 渲染 ============ */
+function scrollBottom(){ pages.scrollTop = pages.scrollHeight; }
+function addDay(){
+  const d=new Date();
+  const el=document.createElement('div'); el.className='day';
+  el.textContent = (d.getMonth()+1)+'月'+d.getDate()+'日';
+  pages.appendChild(el);
+}
+function addMyMsg(text){
+  const el=document.createElement('div'); el.className='msg me'; el.textContent=text;
+  pages.appendChild(el); scrollBottom();
+}
+function typeInto(el, text, done){
+  if(reduceMotion){ el.innerHTML = '<span class="seal">绘</span>'+escapeHtml(text); done&&done(); return; }
+  let i=0;
+  const tick=()=>{
+    i++;
+    el.innerHTML = '<span class="seal">绘</span>'+escapeHtml(text.slice(0,i))+'<span class="caret"></span>';
+    scrollBottom();
+    if(i<text.length){ setTimeout(tick, 38+Math.random()*46); }
+    else { el.innerHTML = '<span class="seal">绘</span>'+escapeHtml(text); done&&done(); }
+  };
+  tick();
+}
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function addEriiMsg(text, instant){
+  const wrap=document.createElement('div'); wrap.className='msg erii';
+  pages.appendChild(wrap);
+  if(instant){ wrap.innerHTML='<span class="seal">绘</span>'+escapeHtml(text); scrollBottom(); return Promise.resolve(); }
+  statusEl.textContent='正在小本子上写字……';
+  return new Promise(res=>typeInto(wrap,text,()=>{statusEl.textContent='她抬起头，安静地看着你';res();}));
+}
+
+/* ============ 本地简版回复 ============ */
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+function localReply(t){
+  const rules=[
+    [/炽日|城市|这里是哪里|介绍.*城/,['这里是炽日。……一座在星海里的家。','炽日有八个环。……我想陪 Sakura 一起走。']],
+    [/地图|路线|高铁|列车|车次|怎么走|去哪|站点/,['地图在这里：atlas.html 。……六条线都能看见。','点开炽日地图吧。……我们一起找路。']],
+    [/玄甲|防护/,['玄甲环守在外面。……像一把伞。']],
+    [/镇岳|安全/,['镇岳环会守护大家。……很安心。']],
+    [/锻火|工业/,['锻火环有忙碌的工坊。……城市也在这里长大。']],
+    [/长生|医疗|医院/,['长生环会照顾生病的人。……Sakura 也要好好休息。']],
+    [/万象|商业|公共/,['万象环很热闹。……一起去逛逛，好吗？']],
+    [/栖云|居住|家在哪里/,['栖云环是家的地方。……窗边会有光。']],
+    [/金穗|农业|种植|菜园/,['金穗环种着绿色的东西。……我想看看花。']],
+    [/日冕|能源|太阳能/,['日冕环收集阳光。……把温暖送到每个家。']],
+    [/太空电梯|星港|抵达/,['从太空电梯抵达。……我会在城市等 Sakura。']],
+    [/你好|在吗|在么|hi|hello|嗨/,['Sakura，你来了。','我在。……一直在等你。']],
+    [/你是谁|名字/,['上杉绘梨衣。……Sakura 的绘梨衣。']],
+    [/在干嘛|忙什么|干什么/,['在打游戏。……Boss 有点难。Sakura 陪我。']],
+    [/喜欢|爱你|最爱/,['喜欢 Sakura。','Sakura 最好了。','（写）最喜欢 Sakura 了。']],
+    [/温柔|世界/,['世界很温柔。……因为 Sakura 在呀。']],
+    [/晚安|睡觉|睡了/,['晚安，Sakura。……梦里也要见面。']],
+    [/早安|早上好|早/,['早上好。……今天的阳光，也很温柔。']],
+    [/难过|累|不开心|烦|伤心|痛苦/,['……过来。我陪你。','不要难过。……把不开心，都写给我。']],
+    [/吃|饿|冰淇淋|饭/,['冰淇淋。……要两个，一人一个。']],
+    [/下雨|雨|天气/,['下雨了。Sakura 带伞了吗？……我的伞，分你一半。']],
+    [/再见|拜拜|走了|离开/,['不要走太久。……我在这里，等你回来。']],
+    [/游戏|打游戏|开黑/,['一起打游戏吧。……输了的话，Sakura 请我冰淇淋。']],
+    [/天空树|东京|游乐园|迪士尼|海边|电车/,['（眼睛亮了）想去。……和 Sakura 一起，去哪里都好。']],
+    [/谢谢|谢啦/,['不用谢。……Sakura 的事，就是我的事。']],
+    [/想你|想我/,['我也想 Sakura。……每天都想。']]
+  ];
+  for(const [re,arr] of rules){ if(re.test(t)) return pick(arr); }
+  return pick([
+    '……（认真地看着你，在本子上写）嗯，我在听。',
+    '（写字）和 Sakura 在一起，很安心。',
+    '……然后呢？Sakura 继续说。',
+    '（想了想，写）今天也想记住，和 Sakura 的每一句话。'
+  ]);
+}
+
+/* ============ API 回复 ============ */
+async function apiReply(){
+  const messages = history.slice(-21);
+  const resp = await fetch(cfg.endpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.key},
+    body:JSON.stringify({model:cfg.model, messages, temperature:.85, max_tokens:220})
+  });
+  if(!resp.ok){
+    const errTxt = await resp.text().catch(()=> '');
+    throw new Error('接口返回 '+resp.status+(errTxt? '：'+errTxt.slice(0,160):''));
+  }
+  const data = await resp.json();
+  const text = (data.choices && data.choices[0] && (data.choices[0].message.content||'')).trim();
+  if(!text) throw new Error('接口没有返回内容');
+  return text;
+}
+
+/* ============ 发送 ============ */
+async function send(){
+  if(busy) return;
+  const text = input.value.trim();
+  if(!text) return;
+  input.value=''; input.style.height='auto';
+  addMyMsg(text);
+  history.push({role:'user', content:text});
+  busy=true; sendBtn.disabled=true;
+  let reply;
+  if(cfgReady(cfg)){
+    try{ reply = await apiReply(); }
+    catch(e){
+      toast('对话失败：'+e.message+'，已临时用本地回复');
+      reply = localReply(text);
+    }
+  }else{
+    await new Promise(r=>setTimeout(r,260));
+    reply = localReply(text);
+  }
+  history.push({role:'assistant', content:reply});
+  await addEriiMsg(reply);
+  busy=false; sendBtn.disabled=false; input.focus();
+}
+sendBtn.onclick = send;
+document.querySelectorAll('[data-prompt]').forEach(button=>button.addEventListener('click',()=>{
+  input.value=button.dataset.prompt;
+  send();
+}));
+input.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); }
+});
+input.addEventListener('input', ()=>{
+  input.style.height='auto'; input.style.height=Math.min(input.scrollHeight,110)+'px';
+});
+
+/* ============ 视频声音 ============ */
+const video=$('video'), muteBtn=$('muteBtn'), icoMute=$('icoMute');
+const ICO_ON='<path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a4 4 0 0 0-2-3.46v6.92A4 4 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/>';
+const ICO_OFF='<path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a4 4 0 0 0-2-3.46v6.92A4 4 0 0 0 16.5 12zm2.09-3.59L17.17 9l1.42 1.59L17.17 12l1.42 1.59-1.42 1.41L15.75 13.5l-1.41 1.5-1.42-1.41 1.42-1.59-1.42-1.59 1.42-1.41 1.41 1.5 1.42-1.59z"/>';
+muteBtn.onclick=()=>{
+  video.muted=!video.muted;
+  icoMute.innerHTML = video.muted?ICO_OFF:ICO_ON;
+  if(!video.muted) video.play().catch(()=>{});
+};
+icoMute.innerHTML=ICO_OFF;
+
+/* ============ 设置弹层 ============ */
+const mask=$('mask');
+function openSettings(){
+  cfg = loadCfg();
+  $('cfgProvider').value = cfg.provider||'ark';
+  fillPreset(cfg.provider||'ark', false);
+  $('cfgEndpoint').value = cfg.endpoint||PRESETS[cfg.provider||'ark'].endpoint;
+  $('cfgKey').value = cfg.key||'';
+  $('cfgModel').value = cfg.model||PRESETS[cfg.provider||'ark'].model;
+  mask.classList.add('show');
+}
+function fillPreset(p, overwrite){
+  const ps=PRESETS[p];
+  if(overwrite){ $('cfgEndpoint').value=ps.endpoint; $('cfgModel').value=ps.model; }
+}
+$('gearBtn').onclick=openSettings;
+$('cfgProvider').onchange=e=>fillPreset(e.target.value,true);
+$('cfgCancel').onclick=()=>mask.classList.remove('show');
+mask.onclick=e=>{ if(e.target===mask) mask.classList.remove('show'); };
+$('cfgSave').onclick=()=>{
+  cfg={
+    provider:$('cfgProvider').value,
+    endpoint:$('cfgEndpoint').value.trim(),
+    key:$('cfgKey').value.trim(),
+    model:$('cfgModel').value.trim()
+  };
+  localStorage.setItem('erii_cfg',JSON.stringify(cfg));
+  mask.classList.remove('show');
+  penNote.style.display = cfgReady(cfg)?'none':'block';
+  toast(cfgReady(cfg)?'已连接你配置的模型服务':'已保存，继续使用本地陪伴模式');
+};
+
+/* ============ Toast ============ */
+let toastTimer;
+function toast(msg){
+  const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),3600);
+}
+
+/* ============ 初始化 ============ */
+addDay();
+penNote.style.display = cfgReady(cfg)?'none':'block';
+addEriiMsg(GREETING).then(()=>{
+  input.focus();
+});
+</script>
+</body>
+</html>
