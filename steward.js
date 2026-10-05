@@ -45,20 +45,20 @@
     if (/高铁|列车|路线|车次|交通|地图|怎么走|站点|换乘/.test(question)) {
       return ['想坐高铁出发吗？炽日有六条概念线路喵。点开地图，列车位置、站点和路线都在那里。', {href:'atlas.html', label:'打开高铁地图 ↗'}];
     }
-    if (/八环|分区|城区|介绍|认识炽日|是什么/.test(question)) {
-      return ['我带你认识这座城喵：以中枢为心，八环分别负责防护、安全、工业、医疗、公共、居住、农业和能源。', {href:'#rings', label:'查看一心八环 ↗'}];
+    if (/八环|八区|分区|城区|介绍|认识炽日|是什么/.test(question)) {
+      return ['炽日以城市中枢为心，外围是铁壁保障、启明科研、望乡旅游、星港、安栖居民、薪火大学、绿野农业和熔炉工业八区。', {href:'#rings', label:'查看一心八区 ↗'}];
     }
     if (/太空电梯|抵达|怎么来|入口|星港/.test(question)) {
       return ['概念设定中，太空电梯连接地面与炽日中枢。抵达后，就能换乘城市交通。', {href:'#arrival', label:'看看抵达章节 ↗'}];
     }
-    if (/玄甲|防护/.test(question)) return ['玄甲环负责外层防护与环境监测，是城市的守护屏障。', {href:'#rings', label:'查看八环 ↗'}];
-    if (/镇岳|安全|应急/.test(question)) return ['镇岳环负责应急和公共安全，让城市运行更安心。', {href:'#rings', label:'查看八环 ↗'}];
-    if (/锻火|工业|制造/.test(question)) return ['锻火环是制造与维修中心，承担城市工程设施的更新。', {href:'#rings', label:'查看八环 ↗'}];
-    if (/长生|医疗|医院|健康/.test(question)) return ['长生环集合医疗、康复与健康研究。', {href:'#rings', label:'查看八环 ↗'}];
-    if (/万象|公共|商业|艺术|学习/.test(question)) return ['万象环是公共客厅，连接学习、艺术和商业生活。', {href:'#rings', label:'查看八环 ↗'}];
-    if (/栖云|居住|住在哪里|家/.test(question)) return ['栖云环是居住区，有街道、绿地与邻里生活。', {href:'#rings', label:'查看八环 ↗'}];
-    if (/金穗|农业|种植|食物|吃/.test(question)) return ['金穗环的温室和城市菜园提供食物，也把绿色带进轨道城市。', {href:'#rings', label:'查看八环 ↗'}];
-    if (/日冕|能源|太阳/.test(question)) return ['日冕环采集太阳能，连接整座城市的能源系统。', {href:'#rings', label:'查看八环 ↗'}];
+    if (/铁壁|防护|保障/.test(question)) return ['铁壁保障区负责安全防卫与物流保障。', {href:'pixel-city.html?zone=shield', label:'打开铁壁保障区 ↗'}];
+    if (/启明|科研|实验/.test(question)) return ['启明科研区集合实验室、天文观测与创新空间。', {href:'pixel-city.html?zone=safety', label:'打开启明科研区 ↗'}];
+    if (/望乡|旅游|度假/.test(question)) return ['望乡旅游区拥有湖湾、文化广场和滨水长廊。', {href:'pixel-city.html?zone=forge', label:'打开望乡旅游区 ↗'}];
+    if (/星港|交通|换乘/.test(question)) return ['星港特区连接星际交通、换乘和商业服务。', {href:'pixel-city.html?zone=culture', label:'打开星港特区 ↗'}];
+    if (/安栖|居住|住在哪里|家/.test(question)) return ['安栖居民区有住宅、街角商业和邻里公园。', {href:'pixel-city.html?zone=energy', label:'打开安栖居民区 ↗'}];
+    if (/薪火|大学|学习/.test(question)) return ['薪火大学区集合高等教育、公共课堂和人才社区。', {href:'pixel-city.html?zone=harvest', label:'打开薪火大学区 ↗'}];
+    if (/绿野|农业|种植|食物|吃/.test(question)) return ['绿野农业区的温室与循环水渠提供城市日常食物。', {href:'pixel-city.html?zone=home', label:'打开绿野农业区 ↗'}];
+    if (/熔炉|工业|制造/.test(question)) return ['熔炉工业区负责制造、维修与能源加工。', {href:'pixel-city.html?zone=care', label:'打开熔炉工业区 ↗'}];
     if (/绘梨衣|陪伴|小本子/.test(question)) return ['绘梨衣在她的小本子里等你喵。一起去打个招呼吧。', {href:'erii.html', label:'去找绘梨衣 ↗'}];
     if (/猫羽雫|扣子|智能|聊天|深入/.test(question)) {
       return ['想继续开放式对话，可以进入猫羽雫的扣子智能体页面。', {href:cozeUrl, label:'与猫羽雫对话 ↗', external:true}];

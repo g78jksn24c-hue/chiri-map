@@ -10,19 +10,20 @@ links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
   menu.setAttribute('aria-expanded','false');
 }));
 const ringData=[
-  ['玄甲环 · 防护','城市的第一道拥抱。外层屏障与监测系统守护每一次日出，也让生活有安心的边界。'],
-  ['镇岳环 · 安全','应急、巡护与公共安全在此协同。面对宇宙的不确定，城市始终保持从容。'],
-  ['锻火环 · 工业','制造与维修中心。城市的每一次更新，都从这里扎实地开始。'],
-  ['长生环 · 医疗','医疗、康复与健康研究相互连接，让关怀跟得上每个人的生活。'],
-  ['万象环 · 公共','集会、学习、艺术与商业交汇的公共客厅。不同的人，在这里彼此看见。'],
-  ['栖云环 · 居住','有窗、有树、有邻居的家。轨道上的生活，也有熟悉而温暖的日常。'],
-  ['金穗环 · 农业','温室、循环水与城市菜园，让新鲜食物和自然气息来到身边。'],
-  ['日冕环 · 能源','太阳能采集与城市能源系统相连，为每个环区带来持续的光。']
+  ['铁壁保障区','安全防卫、物流保障与外层屏障共同守护整座城市。'],
+  ['启明科研区','科研实验室、天文观测与城市创新空间汇聚于此。'],
+  ['望乡旅游区','湖湾、文化展景与度假设施组成炽日最轻松的区域。'],
+  ['星港特区','星际交通、商业服务与旅客换乘构成城市门户。'],
+  ['安栖居民区','住宅、街角商业和邻里公园让轨道生活保持温度。'],
+  ['薪火大学区','大学、公共课堂和人才社区让城市知识不断延续。'],
+  ['绿野农业区','温室农场、循环水渠和生态景观提供城市日常食物。'],
+  ['熔炉工业区','制造、维修与能源加工维持城市设备稳定运行。']
 ];
-const ringAssets=['shield','safety','forge','care','culture','home','harvest','energy'];
+const ringAssets=['shield','safety','culture','energy','home','care','harvest','forge'];
+const ringZones=['shield','safety','forge','culture','energy','harvest','home','care'];
 const ringImage=document.querySelector('.ring-visual img');
 ringImage.src='assets/ring-shield.jpg';
-ringImage.alt='玄甲环防护街区场景图';
+ringImage.alt='铁壁保障区场景图';
 const ringVisit=document.createElement('a');
 ringVisit.className='ring-visit';
 ringVisit.href='pixel-city.html?zone=shield';
@@ -37,7 +38,7 @@ document.querySelectorAll('.ring-btn').forEach(btn=>btn.addEventListener('click'
   const key=ringAssets[Number(btn.dataset.ring)];
   ringImage.src=`assets/ring-${key}.jpg`;
   ringImage.alt=`${item[0]}街区场景图`;
-  ringVisit.href=`pixel-city.html?zone=${key}`;
+  ringVisit.href=`pixel-city.html?zone=${ringZones[Number(btn.dataset.ring)]}`;
 }));
 document.querySelectorAll('.ring-btn').forEach((btn,index)=>{
   const thumb=document.createElement('img');
