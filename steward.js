@@ -2,17 +2,31 @@
   const panel = document.getElementById('steward-panel');
   const fab = document.getElementById('steward-fab');
   const close = document.getElementById('steward-close');
+  const aiView = document.getElementById('steward-ai-view');
+  const guideView = document.getElementById('steward-guide-view');
+  const tabs = [...document.querySelectorAll('[data-steward-tab]')];
   const messages = document.getElementById('steward-messages');
   const form = document.getElementById('steward-form');
   const input = document.getElementById('steward-input');
-  const cozeUrl = 'https://www.coze.cn/store/agent/7692635031994564644?bot_id=true&bid=6lgqsh4mk6012';
+  const cozeUrl = 'https://www.coze.cn/store/agent/7692635031994564644?bot_id=true';
   let returnFocus = fab;
 
-  function showPanel() {
+  function setMode(mode) {
+    const next = mode === 'guide' ? 'guide' : 'ai';
+    aiView.hidden = next !== 'ai';
+    guideView.hidden = next !== 'guide';
+    tabs.forEach(tab => {
+      const active = tab.dataset.stewardTab === next;
+      tab.classList.toggle('is-active', active);
+      tab.setAttribute('aria-selected', String(active));
+    });
+  }
+  function showPanel(mode = 'ai') {
     returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : fab;
+    setMode(mode);
     panel.hidden = false;
     fab.setAttribute('aria-expanded', 'true');
-    input.focus();
+    if (mode === 'guide') input.focus();
   }
   function hidePanel() {
     panel.hidden = true;
@@ -68,15 +82,17 @@
   function ask(question) {
     const text = question.trim();
     if (!text) return;
-    if (panel.hidden) showPanel();
+    if (panel.hidden) showPanel('guide');
+    else setMode('guide');
     addMessage(text, 'me');
     const [reply, action] = answer(text);
     addMessage(reply, 'bot', action);
     input.value = '';
   }
-  document.querySelectorAll('[data-steward-open]').forEach(button => button.addEventListener('click', showPanel));
+  document.querySelectorAll('[data-steward-open]').forEach(button => button.addEventListener('click', () => showPanel(button.dataset.stewardMode || 'ai')));
   fab.addEventListener('click', showPanel);
   close.addEventListener('click', hidePanel);
+  tabs.forEach(tab => tab.addEventListener('click', () => setMode(tab.dataset.stewardTab)));
   document.querySelectorAll('[data-steward-ask]').forEach(button => button.addEventListener('click', () => ask(button.dataset.stewardAsk)));
   form.addEventListener('submit', event => {
     event.preventDefault();
