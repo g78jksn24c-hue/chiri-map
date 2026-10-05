@@ -19,13 +19,33 @@ const ringData=[
   ['金穗环 · 农业','温室、循环水与城市菜园，让新鲜食物和自然气息来到身边。'],
   ['日冕环 · 能源','太阳能采集与城市能源系统相连，为每个环区带来持续的光。']
 ];
+const ringAssets=['shield','safety','forge','care','culture','home','harvest','energy'];
+const ringImage=document.querySelector('.ring-visual img');
+ringImage.src='assets/ring-shield.jpg';
+ringImage.alt='玄甲环防护街区场景图';
+const ringVisit=document.createElement('a');
+ringVisit.className='ring-visit';
+ringVisit.href='pixel-city.html?zone=shield';
+ringVisit.textContent='走进这个街区 ↗';
+document.querySelector('.ring-detail').append(ringVisit);
 document.querySelectorAll('.ring-btn').forEach(btn=>btn.addEventListener('click',()=>{
   document.querySelectorAll('.ring-btn').forEach(b=>b.setAttribute('aria-pressed','false'));
   btn.setAttribute('aria-pressed','true');
   const item=ringData[Number(btn.dataset.ring)];
   document.querySelector('#ring-title').textContent=item[0];
   document.querySelector('#ring-desc').textContent=item[1];
+  const key=ringAssets[Number(btn.dataset.ring)];
+  ringImage.src=`assets/ring-${key}.jpg`;
+  ringImage.alt=`${item[0]}街区场景图`;
+  ringVisit.href=`pixel-city.html?zone=${key}`;
 }));
+document.querySelectorAll('.ring-btn').forEach((btn,index)=>{
+  const thumb=document.createElement('img');
+  thumb.src=`assets/ring-${ringAssets[index]}.jpg`;
+  thumb.alt='';
+  thumb.loading='lazy';
+  btn.prepend(thumb);
+});
 if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){
   const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
     if(entry.isIntersecting){entry.target.classList.add('in');observer.unobserve(entry.target);}
