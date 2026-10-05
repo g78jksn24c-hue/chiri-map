@@ -57,6 +57,7 @@
 .steward-form button{width:36px;height:36px;border-radius:50%;background:#275a78;border:0;color:#fff;font-size:20px;line-height:1}
 .steward-coze-link{display:block;text-align:center;color:#2672a0;font-size:12px;font-weight:650;padding:0 12px 13px}
 .steward-coze-link:hover{text-decoration:underline}
+.steward-tab-link{width:100%;border:0;background:transparent;cursor:pointer;font:inherit}
 @media(max-width:900px){.steward-grid{grid-template-columns:1fr;gap:55px}.steward-showcase{min-height:440px}.steward{padding:100px 24px}}
 @media(max-width:600px){.steward{padding:90px 20px}.steward-copy h2{font-size:48px}.steward-copy p{font-size:15px}.steward-showcase{padding:22px;border-radius:23px;min-height:430px}.steward-preview-message{font-size:18px}.steward-fab{right:13px;bottom:13px}.steward-panel{inset:0;width:100vw;height:100dvh;max-height:none;border-radius:0}.steward-panel-head{padding-top:max(16px,env(safe-area-inset-top))}.steward-coze-link{padding-bottom:max(13px,env(safe-area-inset-bottom))}.steward-ai-foot{padding-bottom:max(10px,env(safe-area-inset-bottom))}}
 .steward-showcase{min-height:620px;background:#eceded}

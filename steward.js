@@ -8,7 +8,6 @@
   const messages = document.getElementById('steward-messages');
   const form = document.getElementById('steward-form');
   const input = document.getElementById('steward-input');
-  const cozeUrl = 'https://www.coze.cn/store/agent/7692635031994564644?bot_id=true';
   let returnFocus = fab;
 
   function setMode(mode) {
@@ -55,7 +54,7 @@
   function answer(question) {
     if (/你好|早安|晚上好|嗨|hello/i.test(question)) return ['你好呀，我是猫羽雫喵。今天想去八环散步，还是看看高铁？', {href:'#rings', label:'一起认识八环 ↗'}];
     if (/谢谢|谢啦/.test(question)) return ['不客气喵！找到方向就好，下一站也可以来问我。', {href:'atlas.html', label:'继续逛地图 ↗'}];
-    if (/你是谁|你的名字/.test(question)) return ['我是猫羽雫，你在炽日的角色导览伙伴喵。这里使用本站导览内容，更多话题可以到扣子找我。', {href:cozeUrl, label:'去扣子找猫羽雫 ↗', external:true}];
+    if (/你是谁|你的名字/.test(question)) return ['我是猫羽雫，你在炽日的角色导览伙伴喵。想聊更多内容，可以点击上方的“AI 管家”模式。'];
     if (/高铁|列车|路线|车次|交通|地图|怎么走|站点|换乘/.test(question)) {
       return ['想坐高铁出发吗？炽日有六条概念线路喵。点开地图，列车位置、站点和路线都在那里。', {href:'atlas.html', label:'打开高铁地图 ↗'}];
     }
@@ -74,10 +73,8 @@
     if (/绿野|农业|种植|食物|吃/.test(question)) return ['绿野农业区的温室与循环水渠提供城市日常食物。', {href:'pixel-city.html?zone=home', label:'打开绿野农业区 ↗'}];
     if (/熔炉|工业|制造/.test(question)) return ['熔炉工业区负责制造、维修与能源加工。', {href:'pixel-city.html?zone=care', label:'打开熔炉工业区 ↗'}];
     if (/绘梨衣|陪伴|小本子/.test(question)) return ['绘梨衣在她的小本子里等你喵。一起去打个招呼吧。', {href:'erii.html', label:'去找绘梨衣 ↗'}];
-    if (/猫羽雫|扣子|智能|聊天|深入/.test(question)) {
-      return ['想继续开放式对话，可以进入猫羽雫的扣子智能体页面。', {href:cozeUrl, label:'与猫羽雫对话 ↗', external:true}];
-    }
-    return ['这道题超出本站导览内容了喵。可以到扣子和猫羽雫继续聊，也可以问我八环、高铁或绘梨衣在哪里。', {href:cozeUrl, label:'进入扣子继续提问 ↗', external:true}];
+    if (/猫羽雫|扣子|智能|聊天|深入/.test(question)) return ['AI 管家模式里就是完整的猫羽雫。点击上方“AI 管家”标签，就能继续聊天。'];
+    return ['这道题超出本站导览内容了喵。点击上方“AI 管家”标签，就能让猫羽雫继续回答；也可以问我八环、高铁或绘梨衣在哪里。'];
   }
   function ask(question) {
     const text = question.trim();
