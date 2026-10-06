@@ -44,6 +44,15 @@
     zone.spots.forEach(([name,,,type])=>{const li=document.createElement('li');li.textContent=name;const sm=document.createElement('small');sm.textContent=type;li.append(sm);list.append(li);});
     const link=document.createElement('a');link.className='solid-button';link.href='pixel-map.html?place='+(spot?spot.id:zone.id);link.textContent='在详细地图中查看 ↗';
     info.append(tag,title,p,list,link);
+    if (zone.type === '农业') {
+      const meal = document.createElement('p');
+      meal.textContent = '从这里的温室出发，跟着像素小人看看一份热饭如何种植、采摘、现炒与打包。';
+      const deliveryLink = document.createElement('a');
+      deliveryLink.className = 'solid-button';
+      deliveryLink.href = 'delivery.html';
+      deliveryLink.textContent = '去丰收市集点一份外卖 ↗';
+      info.append(meal, deliveryLink);
+    }
   }
   function clamp(){const halfW=480/camera.zoom,halfH=320/camera.zoom;camera.x=Math.max(halfW,Math.min(960-halfW,camera.x));camera.y=Math.max(halfH,Math.min(640-halfH,camera.y));}
   function setZoom(value){camera.zoom=Math.max(1,Math.min(2.4,value));clamp();}

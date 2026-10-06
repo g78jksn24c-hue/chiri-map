@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f8faf6">
+  <meta name="description" content="在炽日点一份外卖，看像素农人播种、采摘，厨师现炒、打包。四个环节，每段十秒。">
+  <title>炽日外卖 · 从田间到餐桌</title>
+  <link rel="stylesheet" href="delivery.css?v=1">
+</head>
+<body>
+  <header class="delivery-nav">
+    <a class="delivery-brand" href="index.html"><span>☼</span> 炽日外卖 <small>CHIRI BITE</small></a>
+    <div class="delivery-nav-right"><span class="delivery-location">⌖ 日心广场 · 城市厨房</span><a href="index.html">返回城市 ↗</a></div>
+  </header>
+  <main>
+    <section class="delivery-hero">
+      <div class="hero-copy">
+        <p class="overline">CHIRI BITE / FROM FARM TO TABLE</p>
+        <h1>今天，<br><em>想吃一口炽日。</em></h1>
+        <p class="hero-lede">在城市的小厨房点一份喜欢的。看像素农人播下种子、摘下果实，再由厨师把新鲜炒进你的餐盒。</p>
+        <a class="hero-menu-link" href="#menu">今天的菜单 <span>↓</span></a>
+        <div class="hero-stats"><span><b>8</b> 道城市风味</span><span><b>4</b> 段制作旅程</span><span><b>40</b> 秒看见全过程</span></div>
+      </div>
+      <div class="hero-pixel-card">
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <span class="hero-chip">FRESH FROM CHIRI <i></i></span>
+        <div id="hero-dish" class="hero-dish" aria-hidden="true"></div>
+        <div class="hero-card-label"><strong>本日推荐 / NO. 01</strong><span>星港番茄焗饭</span><b>¥ 28</b></div>
+      </div>
+    </section>
+    <section class="order-layout" id="menu">
+      <div class="menu-column">
+        <div class="section-heading"><div><p class="overline">01 / MENU</p><h2>一座城市，八种好味道。</h2></div><p class="heading-note">主食、汤品、小食、饮品与甜点。<br>选一份，开启从田间到餐桌的旅程。</p></div>
+        <div class="category-tabs" role="group" aria-label="筛选外卖品类">
+          <button class="category-tab is-active" data-category="all" aria-pressed="true" type="button">全部</button>
+          <button class="category-tab" data-category="main" aria-pressed="false" type="button">主食</button>
+          <button class="category-tab" data-category="soup" aria-pressed="false" type="button">汤与小食</button>
+          <button class="category-tab" data-category="drink" aria-pressed="false" type="button">饮品</button>
+          <button class="category-tab" data-category="sweet" aria-pressed="false" type="button">甜点</button>
+        </div>
+        <div class="food-grid" id="food-grid"></div>
+        <noscript>请开启浏览器的 JavaScript，体验点餐与像素制作动画。</noscript>
+      </div>
+      <aside class="cart-card" id="cart-card" aria-label="购物餐篮">
+        <div class="cart-top"><div><p class="overline">YOUR BASKET</p><h2>你的餐篮</h2></div><span class="cart-count" id="cart-count">0</span></div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-total"><span>合计 · 免配送费</span><strong id="cart-total" aria-live="polite">¥ 0</strong></div>
+        <button class="checkout-btn" id="checkout-btn" type="button" disabled>模拟下单 <span>→</span></button>
+        <p class="cart-tip">这是一次城市生活模拟，无需付款。<br>每个制作环节约 10 秒。</p>
+      </aside>
+    </section>
+    <section class="trace-section" id="trace">
+      <div class="section-heading trace-heading"><div><p class="overline">02 / A LITTLE KITCHEN, LIVE</p><h2>你的这一餐，正在发生。</h2></div><p class="heading-note">从翻土、浇水，到翻锅、封盒。<br>小小的人，也在认真对待一顿饭。</p></div>
+      <div class="trace-empty" id="trace-empty"><span class="trace-empty-icon">✦</span><h3>厨房在等你的第一份订单</h3><p>选好餐食，四段像素小剧场就会为你展开。</p><a href="#menu">去挑选喜欢的味道 ↑</a></div>
+      <div class="trace-live" id="trace-live" hidden>
+        <div class="trace-header"><div><p class="overline">LIVE ORDER <span id="order-id">#CH-0000</span></p><h3 id="trace-title" aria-live="polite">正在准备你的餐食</h3></div><div class="trace-time"><span id="trace-time">40</span><small id="trace-time-label">秒后完成</small></div></div>
+        <div class="trace-steps" aria-label="订单制作进度">
+          <div class="trace-step" data-step="0"><b>01</b><span>种植 · 10s</span></div><i></i>
+          <div class="trace-step" data-step="1"><b>02</b><span>采摘 · 10s</span></div><i></i>
+          <div class="trace-step" data-step="2"><b>03</b><span id="cook-step-name">现炒 · 10s</span></div><i></i>
+          <div class="trace-step" data-step="3"><b>04</b><span>打包 · 10s</span></div>
+        </div>
+        <div class="trace-progress" role="progressbar" aria-label="餐食制作完成度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="trace-progress"></span></div>
+        <div class="pixel-scene" id="pixel-scene">
+          <canvas id="kitchen-canvas" width="640" height="320" role="img" aria-label="像素农人与厨师的制作动画"></canvas>
+          <div class="scene-label" id="scene-label">绿野温室</div>
+          <div class="scene-action"><i></i><span id="scene-action">翻土播种</span></div>
+        </div>
+        <div class="trace-caption"><strong id="trace-caption-title">种下一颗种子</strong><span id="trace-caption-copy">农人正在走向田间。</span></div>
+        <div class="trace-order"><span id="trace-order-name"></span><span id="trace-order-price"></span></div>
+        <div class="trace-controls"><button type="button" id="pause-order">暂停观看 Ⅱ</button><button type="button" id="replay-order" hidden>再看一次 ↻</button><a href="#menu">继续逛菜单 ↑</a></div>
+        <p class="receipt" id="receipt" hidden></p>
+      </div>
+    </section>
+    <section class="delivery-note"><div><p class="overline">CHIRI / SMALL DAILY MIRACLES</p><h2>好吃的背后，<br><em>是一座城的协作。</em></h2></div><p>绿野农业区负责种植，城市厨房带来香气，星港调度员安排出餐。从一粒种子开始，让平凡的一顿饭，也有值得被看见的过程。</p></section>
+  </main>
+  <footer class="delivery-footer"><a href="index.html">炽日 CHIRI</a><span>概念外卖模拟 · 价格与流程均为世界观设定</span><a href="#menu">回到菜单 ↑</a></footer>
+  <a class="mobile-basket" href="#cart-card" id="mobile-basket" hidden><span>餐篮 <b id="mobile-count">0</b></span><strong id="mobile-total">¥ 0</strong><span>去下单 ↑</span></a>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="delivery-scene.js?v=1"></script>
+  <script src="delivery.js?v=1"></script>
+</body>
+</html>

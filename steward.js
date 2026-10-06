@@ -4,11 +4,114 @@
   const close = document.getElementById('steward-close');
   const aiView = document.getElementById('steward-ai-view');
   const guideView = document.getElementById('steward-guide-view');
+  const sdkMount = document.getElementById('steward-coze-sdk');
   const tabs = [...document.querySelectorAll('[data-steward-tab]')];
   const messages = document.getElementById('steward-messages');
   const form = document.getElementById('steward-form');
   const input = document.getElementById('steward-input');
   let returnFocus = fab;
+  let sdkClient = null;
+  let sdkTimeout;
+  let sdkStarting = false;
+  const sdkStatus = document.createElement('div');
+  sdkStatus.className = 'steward-sdk-status';
+  sdkStatus.setAttribute('role', 'status');
+  sdkStatus.hidden = true;
+  const sdkStatusText = document.createElement('span');
+  const sdkRetry = document.createElement('button');
+  sdkRetry.type = 'button';
+  sdkRetry.textContent = '重试连接';
+  sdkRetry.hidden = true;
+  sdkStatus.append(sdkStatusText, sdkRetry);
+  sdkMount?.before(sdkStatus);
+
+  function showSdkStatus(text, retry = false) {
+    sdkStatusText.textContent = text;
+    sdkRetry.hidden = !retry;
+    sdkStatus.hidden = false;
+  }
+
+  function syncSdk() {
+    const frame = sdkMount?.querySelector('iframe');
+    if (frame) {
+      if (!frame.dataset.stewardFrame) {
+        frame.dataset.stewardFrame = '';
+        frame.title = '猫羽雫 AI 对话';
+        frame.addEventListener('load', syncSdk);
+      }
+      frame.parentElement.dataset.stewardSdkWindow = '';
+      if (frame.style.display !== 'none') {
+        sdkStatus.hidden = true;
+        window.clearTimeout(sdkTimeout);
+      }
+      sdkStarting = false;
+      return;
+    }
+    if (panel.hidden || aiView.hidden || sdkStarting) return;
+    // This SDK renders its launcher as a logo inside a div, not a button.
+    const launcher = sdkMount?.querySelector('img[alt="logo"]')?.parentElement;
+    if (launcher) {
+      sdkStarting = true;
+      launcher.click();
+    }
+  }
+  const sdkObserver = new MutationObserver(syncSdk);
+  if (sdkMount) sdkObserver.observe(sdkMount, {childList: true, subtree: true, attributes: true, attributeFilter: ['style']});
+
+  function openSdkChat() {
+    if (!sdkMount || panel.hidden || aiView.hidden) return;
+    if (!sdkClient) initSdk();
+    syncSdk();
+  }
+
+  function initSdk() {
+    if (!sdkMount || sdkClient) return;
+    if (!window.CozeWebSDK?.WebChatClient) {
+      showSdkStatus('聊天服务暂时未加载，可以重试或使用站内导览。', true);
+      return;
+    }
+    showSdkStatus('正在连接猫羽雫…');
+    try {
+      sdkClient = new window.CozeWebSDK.WebChatClient({
+        config: {bot_id: '7692635031994564644'},
+        componentProps: {title: '猫羽雫', lang: 'zh-CN', layout: 'pc', width: 360},
+        el: sdkMount,
+      });
+      window.clearTimeout(sdkTimeout);
+      sdkTimeout = window.setTimeout(() => {
+        showSdkStatus('连接较慢，可以重试或切换站内导览。', true);
+      }, 15000);
+    } catch {
+      sdkClient = null;
+      showSdkStatus('聊天服务暂时无法连接，请重试或使用站内导览。', true);
+    }
+  }
+
+  sdkRetry.addEventListener('click', () => {
+    if (!window.CozeWebSDK?.WebChatClient) {
+      const source = document.querySelector('script[src*="/chat-app-sdk/"]');
+      if (!source) return;
+      showSdkStatus('正在重新加载聊天服务…');
+      const script = document.createElement('script');
+      script.src = source.src;
+      script.onload = openSdkChat;
+      script.onerror = () => showSdkStatus('聊天服务仍无法加载，请稍后重试或使用站内导览。', true);
+      document.head.append(script);
+      window.clearTimeout(sdkTimeout);
+      sdkTimeout = window.setTimeout(() => showSdkStatus('聊天服务加载较慢，可以稍后重试或使用站内导览。', true), 15000);
+      return;
+    }
+    const frame = sdkMount?.querySelector('iframe');
+    if (frame) {
+      showSdkStatus('正在重新连接猫羽雫…');
+      frame.src = frame.src;
+      window.clearTimeout(sdkTimeout);
+      sdkTimeout = window.setTimeout(() => showSdkStatus('连接较慢，可以稍后重试或使用站内导览。', true), 15000);
+    } else {
+      sdkStarting = false;
+      openSdkChat();
+    }
+  });
 
   function setMode(mode) {
     const next = mode === 'guide' ? 'guide' : 'ai';
@@ -19,13 +122,15 @@
       tab.classList.toggle('is-active', active);
       tab.setAttribute('aria-selected', String(active));
     });
+    if (next === 'ai') window.setTimeout(openSdkChat, 120);
   }
   function showPanel(mode = 'ai') {
     returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : fab;
-    setMode(mode);
     panel.hidden = false;
+    setMode(mode);
     fab.setAttribute('aria-expanded', 'true');
     if (mode === 'guide') input.focus();
+    if (mode === 'ai') window.setTimeout(openSdkChat, 180);
   }
   function hidePanel() {
     panel.hidden = true;
@@ -70,6 +175,7 @@
     if (/星港|交通|换乘/.test(question)) return ['星港特区连接星际交通、换乘和商业服务。', {href:'pixel-city.html?zone=culture', label:'打开星港特区 ↗'}];
     if (/安栖|居住|住在哪里|家/.test(question)) return ['安栖居民区有住宅、街角商业和邻里公园。', {href:'pixel-city.html?zone=energy', label:'打开安栖居民区 ↗'}];
     if (/薪火|大学|学习/.test(question)) return ['薪火大学区集合高等教育、公共课堂和人才社区。', {href:'pixel-city.html?zone=harvest', label:'打开薪火大学区 ↗'}];
+    if (/外卖|点餐|下单|菜品|买饭|吃什么/.test(question)) return ['想吃点热乎的吗喵？炽日外卖可以模拟点餐，还能看像素小人种植、采摘、烹饪和打包。', {href:'delivery.html', label:'去炽日外卖点餐 ↗'}];
     if (/绿野|农业|种植|食物|吃/.test(question)) return ['绿野农业区的温室与循环水渠提供城市日常食物。', {href:'pixel-city.html?zone=home', label:'打开绿野农业区 ↗'}];
     if (/熔炉|工业|制造/.test(question)) return ['熔炉工业区负责制造、维修与能源加工。', {href:'pixel-city.html?zone=care', label:'打开熔炉工业区 ↗'}];
     if (/绘梨衣|陪伴|小本子/.test(question)) return ['绘梨衣在她的小本子里等你喵。一起去打个招呼吧。', {href:'erii.html', label:'去找绘梨衣 ↗'}];
@@ -87,7 +193,7 @@
     input.value = '';
   }
   document.querySelectorAll('[data-steward-open]').forEach(button => button.addEventListener('click', () => showPanel(button.dataset.stewardMode || 'ai')));
-  fab.addEventListener('click', showPanel);
+  fab.addEventListener('click', () => showPanel('ai'));
   close.addEventListener('click', hidePanel);
   tabs.forEach(tab => tab.addEventListener('click', () => setMode(tab.dataset.stewardTab)));
   document.querySelectorAll('[data-steward-ask]').forEach(button => button.addEventListener('click', () => ask(button.dataset.stewardAsk)));
